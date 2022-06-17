@@ -3,56 +3,61 @@ class Converter:
   def __init__(self):
       print("converter deneme")
 
-  #hex girecek number ve byte array
-  def from_hex(self, hex, endian, byte_length):
-    number_value = int(hex, 16)
-    
-    if endian == "big": 
-      if byte_length == "8-bytes":
-        byte_value = number_value.to_bytes(8, 'big')
-      if byte_length == "4-bytes":
-        byte_value = number_value.to_bytes(4, 'big')
+  def from_hex(self, hex_value):
+    number = int(hex_value, 16)
 
-    if endian == "little": 
-      if byte_length == "8-bytes":
-        byte_value = number_value.to_bytes(8, 'little')
-      if byte_length == "4-bytes":
-        byte_value = number_value.to_bytes(4, 'little')
-    
-    number_array_value = list(byte_value)
-    byte_length = len(byte_value)
+    eight_big_byte = number.to_bytes(8, 'big')
+    four_big_byte = number.to_bytes(4, 'big')
+    eight_little_byte = number.to_bytes(8, 'little')
+    four_little_byte = number.to_bytes(4, 'little')
+
+    eight_big_number_array = list(eight_big_byte)
+    four_big_number_array = list(four_big_byte)
+    eight_little_number_array = list(eight_little_byte)
+    four_little_number_array = list(four_little_byte)
 
     result = { 
-      "byte_array": byte_value, "byte_array_length": byte_length, "number": number_value, "number_array_value": number_array_value
+      "input": hex_value,
+      "number": number,
+      "hex": hex_value,
+      "8_byte_big_number_array": eight_big_number_array,
+      "4_byte_big_number_array": four_big_number_array,
+      "8_byte_little_number_array": eight_little_number_array,
+      "4_byte_little_number_array": four_little_number_array
     }
 
     print("result1",result)
-  
-  #int girecek hex ve byte array
-  def from_int(self, number, endian, byte_length):
+
+    return result
+
+  def from_int(self, number):
     hex_value = hex(number)[2:]
+
+    eight_big_byte = number.to_bytes(8, 'big')
+    four_big_byte = number.to_bytes(4, 'big')
+    eight_little_byte = number.to_bytes(8, 'little')
+    four_little_byte = number.to_bytes(4, 'little')
+
+    eight_big_number_array = list(eight_big_byte)
+    four_big_number_array = list(four_big_byte)
+    eight_little_number_array = list(eight_little_byte)
+    four_little_number_array = list(four_little_byte)
+
     
-    if endian == "big": 
-      if byte_length == "8-bytes":
-        byte_value = number.to_bytes(8, 'big')
-      if byte_length == "4-bytes":
-        byte_value = number.to_bytes(4, 'big')
-
-    if endian == "little": 
-      if byte_length == "8-bytes":
-        byte_value = number.to_bytes(8, 'little')
-      if byte_length == "4-bytes":
-        byte_value = number.to_bytes(4, 'little')
-
-    number_array_value = list(byte_value)
-    byte_length = len(byte_value)
-
     result = { 
-      "byte_value": bytes.fromhex(hex_value), "byte_length": byte_length, "hex_value": hex_value, "number_array_value": number_array_value 
+      "input": number,
+      "number": number,
+      "hex": hex_value,
+      "8_byte_big_number_array": eight_big_number_array,
+      "4_byte_big_number_array": four_big_number_array,
+      "8_byte_little_number_array": eight_little_number_array,
+      "4_byte_little_number_array": four_little_number_array
     }
 
     print("result2", result)
 
+    return result
+
 asdf = Converter()
-asdf.from_hex(hex="1112", endian="little", byte_length="8-bytes")
-asdf.from_int(number=17, endian="big", byte_length="4-bytes")
+asdf.from_hex(hex_value="1112")
+asdf.from_int(number=803)
