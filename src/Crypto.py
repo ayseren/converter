@@ -1,6 +1,5 @@
-from email import message
 import hashlib
-from secp256k1 import PrivateKey
+from secp256k1 import PrivateKey, PublicKey
 import os
 
 class Crypto:
@@ -8,7 +7,7 @@ class Crypto:
     print("Crypto")
 
   def ripemd160(self, value): 
-    ripemd160 = hashlib.new('ripemd160',value.encode('utf-8')).hexdigest()
+    ripemd160 = hashlib.new('ripemd160', value.encode('utf-8')).hexdigest()
     print(ripemd160) 
 
 
@@ -22,14 +21,14 @@ class Crypto:
     print(sha256_value)
 
 
-#farkli sonuc cikti
+  #farkli sonuc cikti
   def hash160(self, value):
     sha256_value = hashlib.sha256(value.encode('utf-8')).hexdigest()
     hash160_value = hashlib.new('ripemd160', sha256_value.encode('utf-8')).hexdigest()
     print(hash160_value)
 
 
-#farkli sonuc cikti
+  #farkli sonuc cikti
   def hash256(self, value):
     sha256_value = hashlib.sha256(value.encode('utf-8')).hexdigest()
     hash256_value = hashlib.sha256(sha256_value.encode('utf-8')).hexdigest()
@@ -60,6 +59,8 @@ class Crypto:
         "uncompressed_public_key": pubkey_uncompressed
       })
 
+
+  # SOR
   def secp256k1_sign(self, message, private_key=None):
     #if not private_key:
     private_key = os.urandom(32)
@@ -70,5 +71,21 @@ class Crypto:
     print(sign)
 
 
+  # TODO
+  def secp256k1_verify(self, message, signature, public_key):
+    public_key = PublicKey(pubkey=public_key, raw=False)
+    #raw_sig is expected to be an object returned from ecdsa_sign
+    #raw_sig =  private_key.ecdsa_sign(message.encode('utf-8'), raw=False)
+    verify = public_key.ecdsa_verify(msg=message, raw_sig=0, raw=False)
+    print(verify)
+
+  
+  # SOR
+  def secp256k1_create_publickey(self, private_key):
+    privkey = PrivateKey(privkey=bytes(bytearray.fromhex(private_key)), raw=True)
+    public_key =  privkey._gen_public_key(privkey=bytes(bytearray.fromhex(private_key)))
+    print(public_key)
+
+
 asdf = Crypto()
-asdf.secp256k1_sign(message="hi", private_key="71d432da4caa0cb28a42867d8d88c6da0c2d3f05fc554cab9e36e3b530fb6807")
+asdf.secp256k1_sign(message="asdf", private_key="71d432da4caa0cb28a42867d8d88c6da0c2d3f05fc554cab9e36e3b530fb6807")
